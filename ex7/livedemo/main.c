@@ -198,8 +198,11 @@ int main(void)
     HAL_UART_Receive(&huart1, uart_buffer, 3072, HAL_MAX_DELAY);
     // printf("Received input data\n");
 
-    // TODO: Convert the input data to integer-8 for MCU and fill the input array
-    
+    // Convert the input data to integer-8 for MCU and fill the input array
+    for (int i = 0; i < AI_CIFAR_MODEL_IN_1_SIZE_BYTES; i++)
+    {
+      in_data[i] = (int8_t)(uart_buffer[i] - 128);
+    }
 
     DWT->CYCCNT = 0;
     nbatch = ai_cifar_model_run(cifar_model, ai_input, ai_output);
